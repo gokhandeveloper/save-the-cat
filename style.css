@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+}
+#languages {
+    width: 600px;
+}
+
+#languages ul {
+    width: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: flex-start;
+}
+
+#languages ul > li {
+    padding:10px;
+    list-style: none;
+    width: 50px;
+}
+
+#keyboard {
+    display: grid;
+    grid-template-columns: 60px 60px 60px 60px 60px 60px 60px;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-items: center;
+    justify-content:  center;
+    align-content: center;
+}
+#keyboard button {
+    cursor: pointer;
+    width:60px;
+    height:40px;
+}
+
+.green {
+    background: green;
+    color:white;
+}
+.red {
+    background: red;
+    color:white;
+
+}
+
+li.lost:before {
+    content: "X ";
+}
+
+span.current-letter {
+    width: 20px;
+    height: 30px;
+    display: block;
+    background: aqua;
+}
+
+section.currentWord {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: flex-end;
+    gap: 10px;
+}
