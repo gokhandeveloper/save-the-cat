@@ -2,14 +2,23 @@ import cats from "./Cats.ts"
 import Cat from "./Cat.tsx";
 import FarewellMessage from "./Farewellmessage.tsx"
 import React, {useEffect} from "react";
-import Word from "./Word.tsx";
+import WordList from "./WordList.tsx";
 import Confetti from "react-confetti";
 import Keyboard from "./Keyboard.tsx";
 import {useWindowSize} from "react-use";
+import Word from "./Word.tsx";
 export default function Main(props) {
     
-    const [currentWord, setCurrentWord] = React.useState("gokhan");
+    const [currentWord, setCurrentWord] = React.useState("");
+    useEffect(() => {
+        (async () => {
+            const randomWord = await WordList();
+            setCurrentWord(randomWord);  
+        })();
 
+    }, []);
+
+    
     const [guessedLetters, setGuessedLetters] = React.useState(Array<string>);
 
 
@@ -47,7 +56,7 @@ export default function Main(props) {
 
         }
 
-        if(youWin) {
+        if(youWin ) {
             props.setGameStatus({gameLost: gameIsLost, youWin: youWin, message: "You win"});
         }
         if(gameIsLost) {
@@ -64,7 +73,7 @@ export default function Main(props) {
         if(wrongGuessCount==0 && guessedLetters.length>0) {
             props.setGameStatus({gameLost: gameIsLost, youWin: youWin, message: "not bad"});
         }
-        if(youWin) {
+        if(youWin && currentWord) {
             props.setGameStatus({gameLost: gameIsLost, youWin: youWin, message: "You win"});
         }
        
@@ -88,22 +97,28 @@ export default function Main(props) {
 
     function setNewGame() {
        setGuessedLetters(()=> []);
+        
     }
   
 
-    return <div id="languages"><ul>{renderLanguages()} </ul>
-    <section className="currentWord">
-        <Word guessedLetters= {guessedLetters} word={currentWord}></Word>
-    </section>
+    return <div id="languages">
+        <ul>{renderLanguages()} </ul>
+        <section className="currentWord">
+            <Word guessedLetters={guessedLetters} word={currentWord}></Word>
+        </section>
 
         <section>
-            <Keyboard  gameIsOver={gameIsOver} set={setLetter} currentWord={currentWord} guessedLetters={guessedLetters}></Keyboard>
+            <Keyboard gameIsOver={gameIsOver} set={setLetter} currentWord={currentWord}
+                      guessedLetters={guessedLetters}></Keyboard>
         </section>
-        {gameIsOver && <p>  <button onClick={setNewGame}>New game</button></p>}
+        {gameIsLost && <p>The word you couldn't guess was {currentWord}</p>}
+        {gameIsOver && <p>
+            <button onClick={setNewGame}>New game</button>
+        </p>}
         <Confetti hidden={!youWin}
                   width={width}
                   height={height}
         />
-    
+
     </div>
 }
